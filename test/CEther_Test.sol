@@ -6,11 +6,13 @@ import "forge-std/console.sol";
 import "../src/Comptroller.sol";
 import "../src/CEther.sol";
 import { JumpRateModel } from "../src/JumpRateModel.sol";
+import { SimplePriceOracle, PriceOracle } from "../src/SimplePriceOracle.sol";
 
 contract CEtherTest is Test {
     Comptroller comptoller;
     JumpRateModel jumpRateModel;
     CEther cether;
+    SimplePriceOracle oracle;
     function setUp() public {
         uint baseRatePerYear = 2;
         uint multiplierPerYear = 2;
@@ -21,6 +23,8 @@ contract CEtherTest is Test {
         comptoller = new Comptroller();
         jumpRateModel = new JumpRateModel(baseRatePerYear, multiplierPerYear, jumpMultiplierPerYear, kink_);
         cether = new CEther(comptoller, InterestRateModel(address(jumpRateModel)), initialExchangeRateMantissa_, "CEther", "cETH", decimals_, payable(address(this)));
+        oracle = new SimplePriceOracle();
+        oracle.setUnderlyingPrice(CToken(address(cether)), 1700);
     }
 
     function test_mint() public {
@@ -37,9 +41,16 @@ contract CEtherTest is Test {
     }
 
     function test_borrow() public {
-
+        test_mint();
+        comptoller._setPriceOracle(PriceOracle(address(oracle)));
+        cether.borrow(1);
     }
 
+    function test_repayBorrow() public {
+        test_borrow();
+        cether.repayBorrow();
+    }
+    
     fallback() external payable {
 
     }
