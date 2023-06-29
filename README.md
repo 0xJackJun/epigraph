@@ -8,6 +8,6 @@ foundryup
 ```
 anvil
 
-forge script script/CEther.s.sol --rpc-url http://127.0.0.1:8545
+forge script script/CEther.s.sol --fork-url http://localhost:8545 --broadcast
 
 ```
