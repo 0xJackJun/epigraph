@@ -14,11 +14,11 @@ contract CEtherTest is Test {
     CEther cether;
     SimplePriceOracle oracle;
     function setUp() public {
-        uint baseRatePerYear = 2;
-        uint multiplierPerYear = 2;
-        uint jumpMultiplierPerYear = 2;
-        uint kink_ = 2;
-        uint initialExchangeRateMantissa_ = 2;
+        uint baseRatePerYear = 20000000000000000;
+        uint multiplierPerYear = 200000000000000000;
+        uint jumpMultiplierPerYear = 2000000000000000000;
+        uint kink_ = 900000000000000000;
+        uint initialExchangeRateMantissa_ = 200000000000000000000000000;
         uint8 decimals_ = 8;
         comptoller = new Comptroller();
         jumpRateModel = new JumpRateModel(baseRatePerYear, multiplierPerYear, jumpMultiplierPerYear, kink_);
