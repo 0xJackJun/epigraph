@@ -47,11 +47,13 @@ contract CEtherTest is Test {
         comptoller._setPriceOracle(PriceOracle(address(oracle)));
         comptoller._setCollateralFactor(CToken(address(cether)), 0.9e18);
         cether.borrow(5e18);
+        assertEq(address(cether).balance, 1e18);
     }
 
     function test_repayBorrow() public {
         test_borrow();
-        cether.repayBorrow();
+        cether.repayBorrow{value: 5e18}();
+        assertEq(address(cether).balance, 6e18);
     }
 
     fallback() external payable {}
