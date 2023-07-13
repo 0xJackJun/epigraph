@@ -810,8 +810,6 @@ contract Comptroller is ComptrollerV7Storage, ComptrollerInterface, ComptrollerE
                     mul_ScalarTruncateAddUInt(vars.oraclePrice, borrowAmount, vars.sumBorrowPlusEffects);
             }
         }
-        console.log("sumCollateral", vars.sumCollateral);
-        console.log("sumBorrowPlusEffects", vars.sumBorrowPlusEffects);
         // These are safe, as the underflow condition is checked first
         if (vars.sumCollateral > vars.sumBorrowPlusEffects) {
             return (Error.NO_ERROR, vars.sumCollateral - vars.sumBorrowPlusEffects, 0);

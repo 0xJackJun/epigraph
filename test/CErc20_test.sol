@@ -38,5 +38,7 @@ contract CERC20_Test is Test {
         comptoller._supportMarket(CToken(address(cErc20Delegator)));
         uint256 mintAmount = 1e18;
         cErc20Delegator.mint(mintAmount);
+        uint256 exchangeRate = cErc20Delegator.exchangeRateStored();
+        assertEq(cErc20Delegator.balanceOf(address(this)), 1e18/(exchangeRate/1e18));
     }
 }
