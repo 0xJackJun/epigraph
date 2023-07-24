@@ -31,7 +31,7 @@ contract CERC20_Test is Test {
         cErc20Delegate = new CErc20Delegate();
         cErc20Delegator =
         new CErc20Delegator(address(mockERC20), comptoller,InterestRateModel(address(jumpRateModel)),initialExchangeRateMantissa_,"test","test",18,payable(address(this)),address(cErc20Delegate),abi.encodePacked(""));
-        mockERC20.approve(address(cErc20Delegator), 1e19);
+        mockERC20.approve(address(cErc20Delegator), type(uint256).max);
         oracle = new SimplePriceOracle();
         oracle.setUnderlyingPrice(CToken(address(cErc20Delegator)), 1700);
     }
@@ -54,13 +54,17 @@ contract CERC20_Test is Test {
         test_mint();
         comptoller._setPriceOracle(PriceOracle(address(oracle)));
         comptoller._setCollateralFactor(CToken(address(cErc20Delegator)), 0.9e18);
+        uint256 balanceBefore = mockERC20.balanceOf(address(this));
         cErc20Delegator.borrow(5e18);
-        console.log(cErc20Delegator.balanceOf(address(this)));
-        assertEq(cErc20Delegator.balanceOf(address(this)), 3e10);
+        uint256 balanceAfter = mockERC20.balanceOf(address(this));
+        assertEq(balanceAfter - balanceBefore, 5e18);
     }
 
     function test_repayBorrow() public {
         test_borrow();
+        uint256 balanceBefore = mockERC20.balanceOf(address(this));
         cErc20Delegator.repayBorrow(1e18);
+        uint256 balanceAfter = mockERC20.balanceOf(address(this));
+        assertEq(balanceBefore - balanceAfter, 1e18);
     }
 }
