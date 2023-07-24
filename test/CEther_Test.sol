@@ -56,5 +56,5 @@ contract CEtherTest is Test {
         assertEq(address(cether).balance, 6e18);
     }
 
-    fallback() external payable {}
+    receive() external payable {}
 }
