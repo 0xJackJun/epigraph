@@ -56,5 +56,12 @@ contract CEtherTest is Test {
         assertEq(address(cether).balance, 6e18);
     }
 
+    function liquidation() public {
+        test_mint();
+        test_borrow();
+        oracle.setUnderlyingPrice(CToken(address(cether)), 1);
+        
+    }
+
     receive() external payable {}
 }

@@ -35,6 +35,7 @@ contract CEtherScript is Script {
         comptoller._supportMarket(CToken(address(cether)));
         comptoller._setPriceOracle(PriceOracle(address(oracle)));
         comptoller._setCollateralFactor(CToken(address(cether)), 0.9e18);
+        console.log("cEther address:", address(cether));
         vm.stopBroadcast();
     }
 }
